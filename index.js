@@ -15,6 +15,7 @@ app.get("/",function(req,res){
 
 });
 
+
 // process.env.PORTはdynamic portとしての機能
 app.listen(process.env.PORT || 3000, function(){
   console.log("The server is runnning on port 3000.");
