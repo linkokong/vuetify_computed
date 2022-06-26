@@ -86,13 +86,23 @@
               >
                 开始答题
               </v-btn>
+              <v-btn
+                  color="error"
+                  class="mr-4"
+                  @click="print"
+                  :disabled="question_list == 0"
+              >
+                打印题目
+              </v-btn>
             </v-row>
           </v-container>
         </v-form>
       </v-col>
     </v-row>
-    <div
+    <form
       style="border: thin solid rgba(0,0,0,.12);min-height: 498px;margin-top:20px;padding:20px 5px"
+      id="form-content"
+      ref='print_area'
     >
       <v-banner>
         <span v-if="examination">已用时间:{{ formatSeconds(used_time) }}
@@ -106,7 +116,7 @@
           sm="12"
           md="6"
         >
-          <v-row dense style="padding-top:10px">
+          <v-row dense class='item-row'>
             <v-col cols="5" sm="5" md="3">
               <v-subheader
                 ><v-row
@@ -158,7 +168,7 @@
         </v-col>
 
       </v-row>
-    </div>
+    </form>
     <v-container>
         <v-col>
           <v-row>
@@ -193,6 +203,8 @@
 </template>
 
 <script>
+import printJS from 'print-js'
+import html2canvas from 'html2canvas'
 export default {
   name: "HelloWorld",
 
@@ -234,6 +246,34 @@ export default {
     score: 0,
   }),
   methods: {
+    print(){
+      console.log(this.question_list)
+
+      html2canvas(this.$refs.print_area).then(canvas=>{
+        const url=canvas.toDataURL()
+        // this.img=url
+        printJS({
+          printable:url,
+          type:'image'
+        })
+
+        // printJS({
+        //   printable:'form-content',
+        //   type:'html',
+        //   font_size:'14pt',
+        //   style: style,
+        //   targetStyles:['*'],
+        //   maxWidth:1100,
+        //   css: [
+        //     "https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900",
+        //     "https://cdn.jsdelivr.net/npm/@mdi/font@6.x/css/materialdesignicons.min.css",
+        //     "https://cdn.jsdelivr.net/npm/vuetify@2.x/dist/vuetify.min.css",
+        //     require("@/assets/print.css")
+        //   ],
+        // })
+      })
+
+    },
     formatSeconds(value) {
       let result = parseInt(value);
       let h =
