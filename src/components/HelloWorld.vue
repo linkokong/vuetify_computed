@@ -247,8 +247,6 @@ export default {
   }),
   methods: {
     print(){
-      console.log(this.question_list)
-
       html2canvas(this.$refs.print_area).then(canvas=>{
         const url=canvas.toDataURL()
         // this.img=url
